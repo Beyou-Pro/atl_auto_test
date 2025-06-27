@@ -1,6 +1,6 @@
 package com.ecommerce.repository.carrier;
 
-import com.ecommerce.entity.carrier.Carrier;
+import com.ecommerce.model.carrier.response.CarrierResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +11,8 @@ import java.util.List;
 public interface CarrierRepository {
 
     @GetMapping("/carriers")
-    List<Carrier> getAllCarriers();
+    List<CarrierResponse> getAllCarriers();
 
     @GetMapping("/carriers/{id}")
-    Carrier getCarrierById(@PathVariable("id") String id);
+    CarrierResponse getCarrierById(@PathVariable("id") String id);
 }

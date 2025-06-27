@@ -1,12 +1,12 @@
 package com.ecommerce.service.carrier;
 
 
-import com.ecommerce.entity.carrier.Carrier;
+import com.ecommerce.model.carrier.response.CarrierResponse;
 
 import java.util.List;
 
 public interface CarrierService {
-    List<Carrier> getCarriers();
+    List<CarrierResponse> getCarriers();
 
-    Carrier getCarrierById(String id);
+    CarrierResponse getCarrierById(String id);
 }

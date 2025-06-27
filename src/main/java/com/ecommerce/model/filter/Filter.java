@@ -1,10 +1,10 @@
 package com.ecommerce.model.filter;
 
-import com.ecommerce.entity.product.Product;
+import com.ecommerce.model.product.response.ProductResponse;
 
 public class Filter {
 
-    public boolean matches(Product p) {
+    public boolean matches(ProductResponse p) {
         return true;
     }
 }

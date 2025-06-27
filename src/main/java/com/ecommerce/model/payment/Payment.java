@@ -1,13 +1,8 @@
-package com.ecommerce.entity.payment;
-
-import jakarta.persistence.*;
+package com.ecommerce.model.payment;
 
 import java.util.Date;
-import java.util.List;
 
-@Entity
 public class Payment {
-    @Id
     private String id;
 
     private String order_id;

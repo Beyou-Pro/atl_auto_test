@@ -1,7 +1,6 @@
 package com.ecommerce.entity.orderitem;
 
 import com.ecommerce.entity.order.Order;
-import com.ecommerce.entity.product.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,10 +21,7 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
+    private String productId;
     private int quantity;
     private double unitPrice;
     private double totalPrice;

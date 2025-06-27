@@ -1,18 +1,18 @@
 package com.ecommerce.service.product;
 
-import com.ecommerce.entity.product.Product;
 import com.ecommerce.model.filter.Filter;
+import com.ecommerce.model.product.response.ProductResponse;
 
 import java.util.List;
 import java.util.Set;
 
 public interface ProductService {
-    List<Product> getProducts();
+    List<ProductResponse> getProducts();
 
-    List<Product> getFilteredProducts(Set<Filter> filters);
+    List<ProductResponse> getFilteredProducts(Set<Filter> filters);
 
-    List<Product> getProductsByName(String name);
+    List<ProductResponse> getProductsByName(String name);
 
-    Product getProductById(String id);
+    ProductResponse getProductById(String id);
 
 }

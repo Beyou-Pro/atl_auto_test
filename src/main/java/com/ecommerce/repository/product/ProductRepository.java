@@ -1,6 +1,6 @@
 package com.ecommerce.repository.product;
 
-import com.ecommerce.entity.product.Product;
+import com.ecommerce.model.product.response.ProductResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,12 +12,12 @@ import java.util.List;
 public interface ProductRepository {
 
     @GetMapping("/products")
-    List<Product> getAllProducts();
+    List<ProductResponse> getAllProducts();
 
     @GetMapping("/products")
-    List<Product> getProductsByName(@RequestParam("name") String name);
+    List<ProductResponse> getProductsByName(@RequestParam("name") String name);
 
     @GetMapping("/products/{id}")
-    Product getProductById(@PathVariable("id") String id);
+    ProductResponse getProductById(@PathVariable("id") String id);
 }
 

@@ -1,7 +1,7 @@
 package com.ecommerce.service.product.impl;
 
-import com.ecommerce.entity.product.Product;
 import com.ecommerce.model.filter.Filter;
+import com.ecommerce.model.product.response.ProductResponse;
 import com.ecommerce.repository.product.ProductRepository;
 import com.ecommerce.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +22,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts() {
+    public List<ProductResponse> getProducts() {
         return productRepository.getAllProducts();
     }
 
     @Override
-    public List<Product> getFilteredProducts(Set<Filter> filters) {
-        List<Product> products = productRepository.getAllProducts();
+    public List<ProductResponse> getFilteredProducts(Set<Filter> filters) {
+        List<ProductResponse> products = productRepository.getAllProducts();
         return products.stream()
                 .filter(p -> filters.stream().allMatch(f -> f.matches(p)))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Product> getProductsByName(String name) {
+    public List<ProductResponse> getProductsByName(String name) {
         return productRepository.getProductsByName(name);
     }
 
     @Override
-    public Product getProductById(String id) {
+    public ProductResponse getProductById(String id) {
         return productRepository.getProductById(id);
     }
 }

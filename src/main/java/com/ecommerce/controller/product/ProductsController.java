@@ -1,7 +1,7 @@
 package com.ecommerce.controller.product;
 
-import com.ecommerce.entity.product.Product;
 import com.ecommerce.model.filter.Filter;
+import com.ecommerce.model.product.response.ProductResponse;
 import com.ecommerce.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,25 +24,25 @@ public class ProductsController {
 
     @Operation(summary = "Get all products")
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         return productService.getProducts();
     }
 
     @Operation(summary = "Get filtered products by filter set")
     @GetMapping("/filters")
-    public List<Product> getFilteredProducts(@RequestParam Set<Filter> filters) {
+    public List<ProductResponse> getFilteredProducts(@RequestParam Set<Filter> filters) {
         return productService.getFilteredProducts(filters);
     }
 
     @Operation(summary = "Get products by name")
     @GetMapping("/name")
-    public List<Product> getFilteredProductsByName(@RequestParam String name) {
+    public List<ProductResponse> getFilteredProductsByName(@RequestParam String name) {
         return productService.getProductsByName(name);
     }
 
     @Operation(summary = "Get product details by ID")
     @GetMapping("/{id}")
-    public Product getProductDetails(@PathVariable String id) {
+    public ProductResponse getProductDetails(@PathVariable String id) {
         return productService.getProductById(id);
     }
 }
