@@ -2,7 +2,7 @@ package com.ecommerce.model.payment;
 
 import java.util.Date;
 
-public class Payment {
+public class PaymentResponse {
     private String id;
 
     private String order_id;
