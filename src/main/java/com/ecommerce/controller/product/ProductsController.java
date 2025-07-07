@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/product")
 public class ProductsController {
 
     private final ProductService productService;
@@ -23,7 +23,7 @@ public class ProductsController {
     }
 
     @Operation(summary = "Get all products")
-    @GetMapping
+    @GetMapping("/products")
     public List<ProductResponse> getAllProducts() {
         return productService.getProducts();
     }
