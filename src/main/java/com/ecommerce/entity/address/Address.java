@@ -4,7 +4,9 @@ import java.util.UUID;
 
 import com.ecommerce.entity.customer.Customer;
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "addresses")
 public class Address {

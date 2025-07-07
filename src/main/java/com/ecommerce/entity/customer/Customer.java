@@ -3,9 +3,12 @@ package com.ecommerce.entity.customer;
 import com.ecommerce.entity.address.Address;
 import com.ecommerce.entity.order.Order;
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.util.List;
 import java.util.UUID;
 
+@Getter
 @Entity
 @Table(name = "customers")
 public class Customer {
