@@ -1,19 +1,20 @@
 package com.ecommerce.service.order;
 
-import com.ecommerce.entity.order.Order;
+import com.ecommerce.model.order.request.OrderRequest;
+import com.ecommerce.model.order.response.OrderResponse;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface OrderService {
 
-    Order createOrder(Order order);
+    OrderResponse createOrder(OrderRequest orderRequest);
 
-    Order getOrderById(UUID id);
+    OrderResponse getOrderById(UUID id);
 
-    List<Order> getOrdersByCustomer(UUID customerId);
+    List<OrderResponse> getOrdersByCustomer(UUID customerId);
 
-    Order updateOrderStatus(UUID orderId, String status);
+    OrderResponse updateOrderStatus(UUID orderId, String status);
 
     void deleteOrder(UUID orderId);
 }

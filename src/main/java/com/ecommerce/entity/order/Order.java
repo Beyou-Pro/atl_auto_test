@@ -4,8 +4,7 @@ import com.ecommerce.entity.address.Address;
 import com.ecommerce.entity.customer.Customer;
 import com.ecommerce.entity.orderitem.OrderItem;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -14,6 +13,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "orders")
 public class Order {
 
@@ -46,4 +48,5 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;
 }
+
 

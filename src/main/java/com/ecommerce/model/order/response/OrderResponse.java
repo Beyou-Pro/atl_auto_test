@@ -23,10 +23,9 @@ public record OrderResponse(
         List<OrderItemResponse> items
 ) {
     public static OrderResponse fromEntity(Order order) {
-        if (order == null) return null;
-
         List<OrderItemResponse> itemResponses = null;
-        if (order.getItems() != null) {
+
+        if (!order.getItems().isEmpty()) {
             itemResponses = order.getItems()
                     .stream()
                     .map(OrderItemResponse::fromEntity)

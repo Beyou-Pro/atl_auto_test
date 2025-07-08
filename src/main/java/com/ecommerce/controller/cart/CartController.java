@@ -15,7 +15,7 @@ public class CartController {
     @GetMapping
     public List<CartItem> getCart(HttpSession session) {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-        if (cart == null) {
+        if (cart.isEmpty()) {
             cart = new ArrayList<>();
             session.setAttribute("cart", cart);
         }
@@ -25,7 +25,7 @@ public class CartController {
     @PostMapping("/add")
     public String addToCart(@RequestBody CartItem item, HttpSession session) {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-        if (cart == null) {
+        if (cart.isEmpty()) {
             cart = new ArrayList<>();
         }
 
@@ -46,7 +46,7 @@ public class CartController {
     @PostMapping("/remove")
     public String removeFromCart(@RequestParam String productId, HttpSession session) {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-        if (cart != null) {
+        if (!cart.isEmpty()) {
             cart.removeIf(item -> item.getProductId().equals(productId));
             session.setAttribute("cart", cart);
         }
