@@ -1,4 +1,4 @@
-package service.carrier;
+package com.ecommerce.service.carrier;
 
 import com.ecommerce.model.carrier.response.CarrierResponse;
 import com.ecommerce.repository.carrier.CarrierRepository;
@@ -13,12 +13,10 @@ import static org.mockito.Mockito.*;
 
 class CarrierServiceTest {
 
-    private CarrierRepository carrierRepository;
     private CarrierService carrierService;
 
     @BeforeEach
     void setUp() {
-        carrierRepository = mock(CarrierRepository.class);
         carrierService = mock(CarrierService.class);
     }
 
