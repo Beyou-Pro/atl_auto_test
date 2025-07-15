@@ -22,13 +22,13 @@ export default function App() {
             .catch(console.error);
 
         // Fetch carriers
-        fetch('/carriers')
+        fetch('http://localhost:8080/carriers')
             .then(res => res.json())
             .then(setCarriers)
             .catch(console.error);
 
         // Fetch payment methods
-        fetch('/payment')
+        fetch('http://localhost:8080/payment')
             .then(res => res.json())
             .then(setPayments)
             .catch(console.error);
@@ -49,16 +49,21 @@ export default function App() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Prepare order payload based on your backend OrderRequest structure
+
         const orderRequest = {
-            deliveryAddress: form.delivery,
-            billingAddress: form.billing,
-            paymentId: form.paymentId,
+            customer: { id: "mock-customer-id-uuid" }, // TODO: replace by logged in customer
+            billingAddress: { id: form.billing },
+            shippingAddress: { id: form.delivery },
             carrierId: form.carrierId,
-            items: cart.map(({ id, quantity }) => ({ productId: id, quantity })),
+            paymentId: form.paymentId,
+            orderTotal: total,
+            orderItems: cart.map(item => ({
+                product: { id: item.id },
+                quantity: item.quantity
+            }))
         };
 
-        fetch('/orders', {
+        fetch('http://localhost:8080/orders', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderRequest),
@@ -72,6 +77,7 @@ export default function App() {
             })
             .catch(console.error);
     };
+
 
     return (
         <div>
@@ -111,7 +117,7 @@ function ProductList({ products, onAddToCart }) {
             {products.length === 0 && <p>Chargement des produits...</p>}
             {products.map(p => (
                 <div key={p.id}>
-                    <span>{p.name} - {p.billing}€</span>
+                    <span>{p.name} - {p.price}€</span>
                     <input
                         type="number"
                         min="1"
@@ -167,7 +173,7 @@ function Checkout({ form, setForm, onSubmit, onBack, carriers, payments }) {
                 <label>Moyen de paiement :</label>
                 <select name="paymentId" value={form.paymentId} onChange={handleChange} required>
                     <option value="">-- Choisir --</option>
-                    {payments.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                    {payments.map(p => <option key={p.id} value={p.id}>{p.method}</option>)}
                 </select>
             </div>
             <button type="submit">Valider la commande</button>

@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
