@@ -1,4 +1,4 @@
-package service.carrier;
+package com.ecommerce.service.carrier;
 
 import com.ecommerce.model.carrier.response.CarrierResponse;
 import com.ecommerce.repository.carrier.CarrierRepository;
