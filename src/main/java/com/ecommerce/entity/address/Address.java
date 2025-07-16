@@ -4,11 +4,17 @@ import java.util.UUID;
 
 import com.ecommerce.entity.customer.Customer;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@Builder
 @Table(name = "addresses")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
 
     @Id
@@ -26,5 +32,3 @@ public class Address {
     @JoinColumn(name = "user_id")
     private Customer customer;
 }
-
-

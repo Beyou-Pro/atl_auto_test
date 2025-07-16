@@ -5,6 +5,7 @@ import com.ecommerce.model.product.response.ProductResponse;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public interface ProductService {
     List<ProductResponse> getProducts();

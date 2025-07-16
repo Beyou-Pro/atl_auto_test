@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/order")
 public class OrderController {
 
     private final OrderService orderService;
@@ -33,7 +33,7 @@ public class OrderController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public List<OrderResponse> getOrdersByCustomer(@PathVariable UUID customerId) {
+    public List<OrderResponse> getOrdersByCustomer(@PathVariable String customerId) {
         return orderService.getOrdersByCustomer(customerId);
     }
 
