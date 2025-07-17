@@ -32,8 +32,16 @@ public class CartController {
             cart = new ArrayList<>();
             session.setAttribute("cart", cart);
         }
+
+        if (session.getAttribute("customerUUID") == null) {
+            String customerUUID = java.util.UUID.randomUUID().toString();
+            session.setAttribute("customerUUID", customerUUID);
+            System.out.println("New customerUUID generated: " + customerUUID);
+        }
+
         return cart;
     }
+
 
     @PostMapping("/add")
     public void addToCart(@RequestBody CartItemRequest request, HttpSession session) {

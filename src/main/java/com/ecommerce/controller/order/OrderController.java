@@ -33,7 +33,7 @@ public class OrderController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public List<OrderResponse> getOrdersByCustomer(@PathVariable String customerId) {
+    public List<OrderResponse> getOrdersByCustomer(@PathVariable UUID customerId) {
         return orderService.getOrdersByCustomer(customerId);
     }
 

@@ -24,26 +24,31 @@ public class Order {
     private UUID id;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "order_date")
     private Date orderDate;
 
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "carrier_id")
+    private String carrierId;
+
+    @Column(name = "payment_id")
+    private String paymentId;
+
+    @Column(name = "order_total")
+    private double orderTotal;
+
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "shipping_address_id")
     private Address shippingAddress;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "billing_address_id")
     private Address billingAddress;
-
-    private String carrierId;
-    private String paymentId;
-
-    private double orderTotal;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;

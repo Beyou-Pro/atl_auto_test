@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Builder
-@Table(name = "addresses")
+@Table(name = "addresses", schema = "ecommerce")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address {
@@ -27,8 +27,4 @@ public class Address {
     private String country;
 
     private String addressType;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Customer customer;
 }

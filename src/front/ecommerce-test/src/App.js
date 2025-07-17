@@ -4,7 +4,7 @@ export default function App() {
     const [products, setProducts] = useState([]);
     const [carriers, setCarriers] = useState([]);
     const [payments, setPayments] = useState([]);
-
+    const [customerUUID, setCustomerUUID] = useState('');
     const [cart, setCart] = useState([]);
     const [checkoutMode, setCheckoutMode] = useState(false);
     const [form, setForm] = useState({
@@ -16,6 +16,14 @@ export default function App() {
 
 
     useEffect(() => {
+        // Set UUID
+        let uuid = localStorage.getItem('customerUUID');
+        if (!uuid) {
+            uuid = crypto.randomUUID();
+            localStorage.setItem('customerUUID', uuid);
+        }
+        setCustomerUUID(uuid);
+
         // Fetch products
         fetch('http://localhost:8080/product/products', {
             credentials: 'include'
@@ -41,6 +49,7 @@ export default function App() {
             .catch(console.error);
 
         // Fetch cart from session
+
         fetch('http://localhost:8080/cart', {
             credentials: 'include'
         })
@@ -77,7 +86,7 @@ export default function App() {
         e.preventDefault();
 
         const orderRequest = {
-            customerId: "mock-customer-id-uuid",
+            customerId: customerUUID,
             billingAddress: {
                 ...form.billing,
                 addressType: "BILLING"
@@ -88,12 +97,12 @@ export default function App() {
             },
             carrierId: form.carrierId,
             paymentId: form.paymentId,
-            orderTotal: total,
             orderItems: cart.map(item => ({
                 productId: item.productId,
                 quantity: item.quantity
             }))
         };
+
 
 
         fetch('http://localhost:8080/order', {

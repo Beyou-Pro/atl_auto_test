@@ -9,13 +9,6 @@ public record CustomerResponse(
         String name,
         String email
 ) {
-    public static CustomerResponse fromEntity(Customer customer) {
-        if (customer == null) return null;
-        return new CustomerResponse(
-                customer.getId(),
-                customer.getName(),
-                customer.getEmail()
-        );
-    }
+
 }
 

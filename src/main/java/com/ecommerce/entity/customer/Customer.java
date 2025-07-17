@@ -3,34 +3,33 @@ package com.ecommerce.entity.customer;
 import com.ecommerce.entity.address.Address;
 import com.ecommerce.entity.order.Order;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @Getter
+@Setter
 @Entity
 @Builder
-@Table(name = "customers")
+@Table(name = "customers", schema = "ecommerce")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
 
     @Id
-    private String id;
+    @Column(columnDefinition = "uuid")
+    private UUID id;
 
     private String name;
     private String email;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "default_ship_address_id")
+    @JoinColumn(name = "default_shipping_address_id", unique = true)
     private Address defaultShipAddress;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "default_billing_address_id")
+    @JoinColumn(name = "default_billing_address_id", unique = true)
     private Address defaultBillingAddress;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)

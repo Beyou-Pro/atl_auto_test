@@ -9,8 +9,7 @@ public record OrderItemResponse(
         String productId,
         int quantity,
         double unitPrice,
-        double totalPrice,
-        String sessionId
+        double totalPrice
 ) {
     public static OrderItemResponse fromEntity(OrderItem item) {
         if (item == null) return null;
@@ -19,8 +18,7 @@ public record OrderItemResponse(
                 item.getProductId(),
                 item.getQuantity(),
                 item.getUnitPrice(),
-                item.getTotalPrice(),
-                item.getSessionId()
+                item.getTotalPrice()
         );
     }
 }

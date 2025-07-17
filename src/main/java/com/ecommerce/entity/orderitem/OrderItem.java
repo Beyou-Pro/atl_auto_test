@@ -18,14 +18,19 @@ public class OrderItem {
     @Id
     @GeneratedValue
     private UUID id;
+
+    @Column(name = "product_id")
     private String productId;
+
     private int quantity;
+
+    @Column(name = "unit_price")
     private double unitPrice;
+
+    @Column(name = "total_price")
     private double totalPrice;
-    private String sessionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 }
-

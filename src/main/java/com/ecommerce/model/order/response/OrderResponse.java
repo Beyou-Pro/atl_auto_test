@@ -1,8 +1,6 @@
 package com.ecommerce.model.order.response;
 
 import com.ecommerce.entity.order.Order;
-import com.ecommerce.model.address.response.AddressResponse;
-import com.ecommerce.model.customer.response.CustomerResponse;
 import com.ecommerce.model.orderitem.response.OrderItemResponse;
 
 import java.util.Date;
@@ -14,9 +12,9 @@ public record OrderResponse(
         UUID id,
         Date orderDate,
         String status,
-        CustomerResponse customer,
-        AddressResponse shippingAddress,
-        AddressResponse billingAddress,
+        UUID customerId,
+        UUID shippingAddressId,
+        UUID billingAddressId,
         String carrierId,
         String paymentId,
         double orderTotal,
@@ -36,9 +34,9 @@ public record OrderResponse(
                 order.getId(),
                 order.getOrderDate(),
                 order.getStatus(),
-                CustomerResponse.fromEntity(order.getCustomer()),
-                AddressResponse.fromEntity(order.getShippingAddress()),
-                AddressResponse.fromEntity(order.getBillingAddress()),
+                order.getCustomer().getId(),
+                order.getShippingAddress().getId(),
+                order.getBillingAddress().getId(),
                 order.getCarrierId(),
                 order.getPaymentId(),
                 order.getOrderTotal(),
