@@ -1,6 +1,5 @@
 package com.ecommerce.repository.payment;
 
-import com.ecommerce.model.carrier.response.CarrierResponse;
 import com.ecommerce.model.payment.PaymentResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

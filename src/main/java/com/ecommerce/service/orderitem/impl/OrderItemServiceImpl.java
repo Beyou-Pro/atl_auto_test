@@ -3,7 +3,6 @@ package com.ecommerce.service.orderitem.impl;
 import com.ecommerce.entity.orderitem.OrderItem;
 import com.ecommerce.model.orderitem.request.OrderItemRequest;
 import com.ecommerce.model.product.response.ProductResponse;
-import com.ecommerce.repository.orderitem.OrderItemRepository;
 import com.ecommerce.repository.product.ProductRepository;
 import com.ecommerce.service.orderitem.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +13,10 @@ import java.util.List;
 @Service
 public class OrderItemServiceImpl implements OrderItemService {
 
-    private final OrderItemRepository orderItemRepository;
     private final ProductRepository productRepository;
 
     @Autowired
-    public OrderItemServiceImpl(OrderItemRepository orderItemRepository, ProductRepository productRepository) {
-        this.orderItemRepository = orderItemRepository;
+    public OrderItemServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 

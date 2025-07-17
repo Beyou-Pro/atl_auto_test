@@ -1,7 +1,6 @@
 package com.ecommerce.model.address.response;
 
 import com.ecommerce.entity.address.Address;
-import com.ecommerce.model.customer.response.CustomerResponse;
 
 import java.util.UUID;
 
