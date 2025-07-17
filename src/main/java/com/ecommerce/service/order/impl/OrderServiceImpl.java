@@ -6,14 +6,11 @@ import com.ecommerce.entity.order.Order;
 import com.ecommerce.entity.orderitem.OrderItem;
 import com.ecommerce.model.order.request.OrderRequest;
 import com.ecommerce.model.order.response.OrderResponse;
-import com.ecommerce.model.product.response.ProductResponse;
-import com.ecommerce.repository.address.AddressRepository;
-import com.ecommerce.repository.customer.CustomerRepository;
 import com.ecommerce.repository.order.OrderRepository;
-import com.ecommerce.repository.orderitem.OrderItemRepository;
-import com.ecommerce.repository.product.ProductRepository;
+import com.ecommerce.service.address.AddressService;
 import com.ecommerce.service.customer.CustomerService;
 import com.ecommerce.service.order.OrderService;
+import com.ecommerce.service.orderitem.OrderItemService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,80 +23,50 @@ import java.util.*;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
-    private final ProductRepository productRepository;
-    private final CustomerRepository customerRepository;
-    private final AddressRepository addressRepository;
 
     private final CustomerService customerService;
+    private final AddressService addressService;
+    private final OrderItemService orderItemService;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository, CustomerRepository customerRepository, AddressRepository addressRepository, CustomerService customerService) {
+    public OrderServiceImpl(OrderRepository orderRepository, CustomerService customerService, AddressService addressService, OrderItemService orderItemService) {
         this.orderRepository = orderRepository;
-        this.orderItemRepository = orderItemRepository;
-        this.productRepository = productRepository;
-        this.customerRepository = customerRepository;
-        this.addressRepository = addressRepository;
         this.customerService = customerService;
+        this.addressService = addressService;
+        this.orderItemService = orderItemService;
     }
 
     @Override
     @Transactional
     public OrderResponse createOrder(OrderRequest orderRequest) {
         Customer customer = customerService.getOrCreateCustomer(orderRequest.customerId());
+        Address billingAddress = addressService.createAndSaveAddress(orderRequest.billingAddress());
+        Address shippingAddress = addressService.createAndSaveAddress(orderRequest.shippingAddress());
+        List<OrderItem> items = orderItemService.createOrderItems(orderRequest.orderItems());
 
-        Address billingAddress = Address.builder()
-                .street(orderRequest.billingAddress().street())
-                .city(orderRequest.billingAddress().city())
-                .zipcode(orderRequest.billingAddress().zipcode())
-                .country(orderRequest.billingAddress().country())
-                .addressType(orderRequest.billingAddress().addressType())
-                .build();
+        Order order = createOrderEntity(customer, billingAddress, shippingAddress, orderRequest, items);
 
-        Address shippingAddress = Address.builder()
-                .street(orderRequest.shippingAddress().street())
-                .city(orderRequest.shippingAddress().city())
-                .zipcode(orderRequest.shippingAddress().zipcode())
-                .country(orderRequest.shippingAddress().country())
-                .addressType(orderRequest.shippingAddress().addressType())
-                .build();
+        return OrderResponse.fromEntity(orderRepository.save(order));
+    }
 
-        billingAddress = addressRepository.save(billingAddress);
-        shippingAddress = addressRepository.save(shippingAddress);
-
-        List<OrderItem> items = orderRequest.orderItems().stream()
-                .map(orderItemRequest -> {
-                    ProductResponse product = productRepository.getProductById(orderItemRequest.productId());
-                    return OrderItem.builder()
-                            .productId(product.id())
-                            .quantity(orderItemRequest.quantity())
-                            .unitPrice(product.price())
-                            .totalPrice(orderItemRequest.quantity() * product.price())
-                            .build();
-                })
-                .toList();
-
-
+    private Order createOrderEntity(Customer customer, Address billing, Address shipping,
+                                    OrderRequest orderRequest, List<OrderItem> items) {
 
         Order order = Order.builder()
                 .customer(customer)
-                .billingAddress(billingAddress)
-                .shippingAddress(shippingAddress)
+                .billingAddress(billing)
+                .shippingAddress(shipping)
                 .carrierId(orderRequest.carrierId())
                 .paymentId(orderRequest.paymentId())
                 .orderDate(new Date())
-                .items(items)
-                .orderTotal(items.stream()
-                        .mapToDouble(OrderItem::getTotalPrice)
-                        .sum())
+                .orderTotal(items.stream().mapToDouble(OrderItem::getTotalPrice).sum())
                 .status("CREATED")
+                .items(items)
                 .build();
 
-        for (OrderItem item : items) {
-            item.setOrder(order);
-        }
+        items.forEach(item -> item.setOrder(order));
 
-        return OrderResponse.fromEntity(orderRepository.save(order));
+        return order;
     }
 
     @Override

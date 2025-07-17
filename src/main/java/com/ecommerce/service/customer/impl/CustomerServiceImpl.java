@@ -19,8 +19,8 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Customer getOrCreateCustomer(UUID customerId) {
         return customerRepository.findById(customerId)
                 .orElseGet(() -> {
