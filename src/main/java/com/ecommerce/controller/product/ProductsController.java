@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/product")
@@ -42,7 +43,7 @@ public class ProductsController {
 
     @Operation(summary = "Get product details by ID")
     @GetMapping("/{id}")
-    public ProductResponse getProductDetails(@PathVariable String id) {
+    public ProductResponse getProductDetails(@PathVariable String id) { // CAN'T USE UUID 'CAUSE OF BADLY FORMATTED PRODUCTS IN JSON ECOMMERCE
         return productService.getProductById(id);
     }
 }

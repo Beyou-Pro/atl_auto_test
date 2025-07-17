@@ -4,11 +4,17 @@ import java.util.UUID;
 
 import com.ecommerce.entity.customer.Customer;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "addresses")
+@Builder
+@Table(name = "addresses", schema = "ecommerce")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
 
     @Id
@@ -21,10 +27,4 @@ public class Address {
     private String country;
 
     private String addressType;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Customer customer;
 }
-
-

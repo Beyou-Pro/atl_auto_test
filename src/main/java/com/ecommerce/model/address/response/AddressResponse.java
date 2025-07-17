@@ -11,8 +11,7 @@ public record AddressResponse(
         String city,
         String zipcode,
         String country,
-        String addressType,
-        CustomerResponse customer
+        String addressType
 ) {
 
     public static AddressResponse fromEntity(Address address) {
@@ -22,8 +21,7 @@ public record AddressResponse(
                 address.getCity(),
                 address.getZipcode(),
                 address.getCountry(),
-                address.getAddressType(),
-                CustomerResponse.fromEntity(address.getCustomer())
+                address.getAddressType()
         );
     }
 }

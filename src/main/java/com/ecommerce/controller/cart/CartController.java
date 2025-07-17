@@ -1,8 +1,14 @@
 package com.ecommerce.controller.cart;
 
 import com.ecommerce.model.cart.CartItem;
+import com.ecommerce.model.cart.request.CartItemRequest;
+import com.ecommerce.model.product.response.ProductResponse;
+import com.ecommerce.service.product.ProductService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,51 +18,76 @@ import java.util.Optional;
 @RequestMapping("/cart")
 public class CartController {
 
+    private final ProductService productService;
+
+    @Autowired
+    public CartController(ProductService productService) {
+        this.productService = productService;
+    }
+
     @GetMapping
     public List<CartItem> getCart(HttpSession session) {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-        if (cart.isEmpty()) {
+        if (cart == null) {
             cart = new ArrayList<>();
             session.setAttribute("cart", cart);
         }
+
+        if (session.getAttribute("customerUUID") == null) {
+            String customerUUID = java.util.UUID.randomUUID().toString();
+            session.setAttribute("customerUUID", customerUUID);
+            System.out.println("New customerUUID generated: " + customerUUID);
+        }
+
         return cart;
     }
 
+
     @PostMapping("/add")
-    public String addToCart(@RequestBody CartItem item, HttpSession session) {
+    public void addToCart(@RequestBody CartItemRequest request, HttpSession session) {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-        if (cart.isEmpty()) {
+        if (cart == null) {
             cart = new ArrayList<>();
         }
 
+        ProductResponse product = productService.getProductById(request.productId());
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+
         Optional<CartItem> existing = cart.stream()
-                .filter(ci -> ci.getProductId().equals(item.getProductId()))
+                .filter(ci -> ci.getProductId().equals(request.productId()))
                 .findFirst();
 
         if (existing.isPresent()) {
-            existing.get().setQuantity(existing.get().getQuantity() + item.getQuantity());
+            existing.get().setQuantity(existing.get().getQuantity() + request.quantity());
         } else {
-            cart.add(item);
+            CartItem newItem = new CartItem(
+                    product.id(),
+                    product.name(),
+                    product.price(),
+                    request.quantity()
+            );
+            cart.add(newItem);
         }
 
         session.setAttribute("cart", cart);
-        return "Item added to cart";
     }
 
+
     @PostMapping("/remove")
-    public String removeFromCart(@RequestParam String productId, HttpSession session) {
+    public void removeFromCart(@RequestParam String productId, HttpSession session) {
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-        if (!cart.isEmpty()) {
+        if (cart != null) {
             cart.removeIf(item -> item.getProductId().equals(productId));
             session.setAttribute("cart", cart);
         }
-        return "Item removed";
     }
 
+
     @PostMapping("/clear")
-    public String clearCart(HttpSession session) {
+    public void clearCart(HttpSession session) {
         session.removeAttribute("cart");
-        return "Cart cleared";
     }
 }
 
